@@ -1,3 +1,56 @@
 from django.db import models
+from django.contrib.auth.models import User
+from django.shortcuts import reverse
 
-# Create your models here.
+
+class Task(models.Model):
+
+    title = models.TextField()
+    description = models.TextField()
+
+    class Meta:
+        verbose_name = "task"
+        verbose_name_plural = "tasks"
+
+    def __str__(self):
+        return self.title
+
+    def get_absolute_url(self):
+        return reverse("tasks:task_detail", kwargs={"pk": self.pk})
+
+
+class Project(models.Model):
+
+    title = models.TextField()
+
+    description = models.TextField()
+
+    access = models.ManyToManyField(User,
+                                    through='ProjectAccess',
+                                    through_fields=('project', 'user'))
+
+    class Meta:
+        verbose_name = "project"
+        verbose_name_plural = "projects"
+
+    def __str__(self):
+        return self.title
+
+    def get_absolute_url(self):
+        return reverse("tasks:project_detail", kwargs={"pk": self.pk})
+
+
+class ProjectAccess(models.Model):
+
+    project = models.ForeignKey(Project, on_delete=models.CASCADE)
+    User = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    class Meta:
+        verbose_name = "projectaccess"
+        verbose_name_plural = "projectaccess"
+
+    def __str__(self):
+        return self.name
+
+    def get_absolute_url(self):
+        return reverse("projectaccess_detail", kwargs={"pk": self.pk})
