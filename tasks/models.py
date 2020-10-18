@@ -43,7 +43,7 @@ class Project(models.Model):
 class ProjectAccess(models.Model):
 
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
-    User = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
 
     class Meta:
         verbose_name = "projectaccess"
