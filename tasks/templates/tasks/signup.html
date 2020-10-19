@@ -1,0 +1,144 @@
+{% extends 'tasks/base.html' %} {% load static %}
+
+<span></span>
+{% block head %}
+<style>
+  .bd-placeholder-img {
+    font-size: 1.125rem;
+    text-anchor: middle;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
+
+  @media (min-width: 768px) {
+    .bd-placeholder-img-lg {
+      font-size: 3.5rem;
+    }
+  }
+
+  .main-content {
+    background: url("{% static "tasks/images/background.jpg" %}");
+    background-position: center;
+    background-size: cover;
+  }
+
+
+  .full-height {
+    height: 100%;
+  }
+</style>
+
+<link href="{% static 'tasks/css/login.css' %}" rel="stylesheet" />
+{% endblock head %}
+
+<span></span>
+
+<span></span>
+
+<span></span>
+{% block content %}
+<main class="container-fluid text-center main-content full-height">
+  <div class="row full-height align-items-center">
+    <form class="form-signin" method="post">
+      {% csrf_token %}
+      <img
+        class="mb-4"
+        src="{% static 'tasks/images/users-icon.png' %}"
+        alt=""
+        width="80"
+        height="80"
+      />
+
+      <h1 class="h3 mb-3 font-weight-normal">Sign Up</h1>
+
+      <div class="row">
+        <div class="col-6">
+          <div class="form-group">
+            <input
+              type="text"
+              class="form-control"
+              name="first_name"
+              id="first_name"
+              aria-describedby="helpFirstName"
+              placeholder="First Name"
+            />
+            <small id="helpFirstName" class="form-text text-muted sr-only"
+              >Enter your first name</small
+            >
+          </div>
+        </div>
+
+        <div class="col-6">
+          <div class="form-group">
+            <input
+              type="text"
+              class="form-control"
+              name="last_name"
+              id="last_name"
+              aria-describedby="helpLastName"
+              placeholder="Last Name"
+            />
+            <small id="helpLastName" class="form-text text-muted sr-only"
+              >Enter your last name</small
+            >
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <input
+          type="text"
+          class="form-control"
+          name="username"
+          id="username"
+          aria-describedby="helpEmail"
+          placeholder="Email Address (will be username)"
+        />
+        <small id="helpEmail" class="form-text text-muted sr-only">
+          Enter your email address
+        </small>
+      </div>
+      <div class="form-group">
+        <input
+          type="password"
+          class="form-control"
+          name="password1"
+          id="password"
+          placeholder="Password"
+        />
+      </div>
+      <div class="form-group">
+        <input
+          type="password"
+          class="form-control"
+          name="password2"
+          id="password_repeat"
+          placeholder="Repeat Password"
+        />
+      </div>
+      {{ form.errors }}
+      <div class="form-check">
+        <label class="form-check-label">
+          <input
+            type="checkbox"
+            class="form-check-input"
+            name="agree"
+            id="agree"
+            value="checkedValue"
+            required
+          />
+          Agree to terms and conditions
+        </label>
+      </div>
+      <div></div>
+      <br />
+      <button type="submit" class="btn btn-primary">Create Account</button>
+    </form>
+  </div>
+</main>
+{% endblock content %}
+
+<span></span>
+{% block footer %}{% endblock footer %}

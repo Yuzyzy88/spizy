@@ -1,0 +1,74 @@
+{% extends 'tasks/base.html' %} {% load static %}
+
+<span></span>
+{% block title %}
+<title>Logged out</title>
+{% endblock title %}
+
+<span></span>
+{% block head %}
+<style>
+  .bd-placeholder-img {
+    font-size: 1.125rem;
+    text-anchor: middle;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
+
+  @media (min-width: 768px) {
+    .bd-placeholder-img-lg {
+      font-size: 3.5rem;
+    }
+  }
+
+  .main-content {
+    background: url("{% static 'tasks/images/background.jpg' %}");
+    background-position: center;
+    background-size: cover;
+  }
+  .full-height {
+    height: 100%;
+  }
+</style>
+<link href="{% static 'tasks/css/login.css' %}" rel="stylesheet" />
+{% endblock head %}
+
+<span></span>
+{% block content %}
+
+<main class="container-fluid text-center main-content full-height">
+  <div class="row full-height align-items-center">
+    <div class="form-signin">
+      {% csrf_token %}
+      <img
+        class="mb-4"
+        src="{% static 'tasks/images/users-icon.png' %}"
+        alt=""
+        width="80"
+        height="80"
+      />
+      <h1 class="h3 mb-3 font-weight-normal">Logged out</h1>
+
+      {% if logged_out is True %}
+      <div class="alert alert-success" role="alert">
+        Successfully logged out
+      </div>
+      {% endif %}
+
+      <a href="{% url 'tasks:login' %}">
+        <button
+          class="btn btn-lg btn-primary btn-block"
+          href="{% url 'tasks:login' %}"
+        >
+          Login In Again
+        </button>
+      </a>
+    </div>
+  </div>
+</main>
+{% endblock content %}
+
+<span></span>
+{% block footer %} {% endblock footer %}
