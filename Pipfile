@@ -11,6 +11,7 @@ yapf = "*"
 [packages]
 django = "*"
 djangorestframework = "*"
+django-filter = "*"
 
 [requires]
 python_version = "3.7"
