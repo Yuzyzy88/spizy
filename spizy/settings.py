@@ -126,3 +126,13 @@ LOGIN_URL = "/login"
 CSRF_HEADER_NAME = "HTTP_X_CSRFTOKEN"
 CSRF_USE_SESSIONS = False
 CSRF_COOKIE_HTTPONLY = False
+
+REST_FRAMEWORK = {
+    'DEFAULT_RENDERER_CLASSES': [
+        'rest_framework.renderers.JSONRenderer',
+    ]
+}
+
+if DEBUG:
+    REST_FRAMEWORK['DEFAULT_RENDERER_CLASSES'].append(
+        'rest_framework.renderers.BrowsableAPIRenderer')
