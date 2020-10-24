@@ -1,20 +1,19 @@
-from django.contrib.auth.models import User
+
 from django.contrib.auth.views import LoginView, LogoutView
 from django.http import HttpRequest
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import CreateView
-from rest_framework import status
+from django.shortcuts import get_object_or_404
 from rest_framework.generics import (ListCreateAPIView,
                                      RetrieveUpdateDestroyAPIView)
 from rest_framework.permissions import IsAuthenticated
-from rest_framework.response import Response
-from rest_framework.serializers import Serializer
 from rest_framework.exceptions import PermissionDenied
 
 from tasks.forms import SignUpForm
 from tasks.models import Project, ProjectAccess, Task
 from tasks.serializers import ProjectSerializer, TaskSerializer
+from tasks.permissions import IsPartOfProject
 
 
 def index(request: HttpRequest):
@@ -58,7 +57,6 @@ class UserLogoutView(LogoutView):
 
 
 class ProjectList(ListCreateAPIView):
-    queryset = Project.objects.all()
     serializer_class = ProjectSerializer
     permission_classes = [IsAuthenticated]
 
@@ -75,8 +73,32 @@ class ProjectList(ListCreateAPIView):
         return project
 
 
+class ProjectDetail(RetrieveUpdateDestroyAPIView):
+    serializer_class = ProjectSerializer
+    permission_classes = [IsAuthenticated, IsPartOfProject]
+
+    def get_queryset(self):
+        return self.request.user.project_set.all()
+
+    def get_object(self):
+        # Query the objects
+        queryset = self.get_queryset()
+        queryset = self.filter_queryset(queryset)
+
+        # Filter the object
+        filter = {}
+        filter[self.lookup_field] = self.kwargs[self.lookup_field]
+
+        # Check permissions before return
+        obj = get_object_or_404(
+            queryset,
+            **filter,
+        )
+        self.check_object_permissions(self.request, obj)
+        return obj
+
+
 class TaskList(ListCreateAPIView):
-    queryset = Task.objects.all()
     serializer_class = TaskSerializer
     permission_classes = [IsAuthenticated]
 

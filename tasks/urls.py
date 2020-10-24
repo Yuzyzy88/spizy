@@ -1,6 +1,5 @@
-from django.urls import path, include
+from django.urls import path
 from tasks import views
-from django.contrib.auth import views as auth_views
 
 # Namespace URL paths
 app_name = "tasks"
@@ -11,5 +10,6 @@ urlpatterns = [
     path('login', views.UserLoginView.as_view(), name="login"),
     path('logout', views.UserLogoutView.as_view(), name="logout"),
     path('projects', views.ProjectList.as_view(), name="projects"),
+    path('project/<int:pk>', views.ProjectDetail.as_view(), name="project"),
     path('tasks', views.TaskList.as_view(), name="tasks"),
 ]

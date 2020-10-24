@@ -1,6 +1,6 @@
-from rest_framework.serializers import ModelSerializer, ReadOnlyField, IntegerField
+from rest_framework.serializers import ModelSerializer, ReadOnlyField
 
-from tasks.models import Project, ProjectAccess, Task
+from tasks.models import Project, Task
 
 
 class ProjectSerializer(ModelSerializer):
@@ -15,4 +15,3 @@ class TaskSerializer(ModelSerializer):
     class Meta:
         model = Task
         fields = ['id', 'title', 'description', 'project', 'owner']
-
