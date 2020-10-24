@@ -7,7 +7,7 @@ import json
 class ProjectTestCase(TestCase):
     def setUp(self):
         self.factory = RequestFactory()
-        self.user = User.objects.create(username="jane_doe",
+        self.user = User.objects.create(username="jane_doe@email.com",
                                         email="jane_doe@email.com",
                                         password="secret")
         self.client = Client()
@@ -35,6 +35,24 @@ class ProjectTestCase(TestCase):
 
         # Return Response
         return response
+
+    def test_user_get_project(self):
+        """
+        User is allowed to have projects
+        """
+        # Login and get projects
+        self.client.force_login(self.user)
+        response = self.client.get(reverse_lazy('tasks:projects'))
+
+        self.assertEqual(response.status_code, 200)
+
+    def test_anonymous_get_project(self):
+        """
+        Anonymous user is not allowed to have projects
+        """
+        # Do not login and try to retreive projects
+        response = self.client.get(reverse_lazy('tasks:projects'))
+        self.assertEqual(response.status_code, 403)
 
     def test_user_create_project(self):
         """
