@@ -37,8 +37,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'tasks.apps.TasksConfig',
     'rest_framework',
+    'django_filters',
+    'tasks.apps.TasksConfig',
 ]
 
 MIDDLEWARE = [
@@ -130,7 +131,9 @@ CSRF_COOKIE_HTTPONLY = False
 REST_FRAMEWORK = {
     'DEFAULT_RENDERER_CLASSES': [
         'rest_framework.renderers.JSONRenderer',
-    ]
+    ],
+    'DEFAULT_FILTER_BACKENDS':
+    ['django_filters.rest_framework.DjangoFilterBackend']
 }
 
 if DEBUG:
