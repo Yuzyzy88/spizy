@@ -29,6 +29,9 @@ class ProjectAccess(models.Model):
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
+    class Meta:
+        unique_together = (('project', 'user'))
+
     class MembershipLevel(models.IntegerChoices):
         OWNER = 1
         MEMBER = 2
