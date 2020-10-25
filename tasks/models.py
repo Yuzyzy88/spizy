@@ -40,7 +40,7 @@ class ProjectAccess(models.Model):
         verbose_name_plural = "projectaccess"
 
     def __str__(self):
-        return self.name
+        return f"{self.project.title} - {self.user.username}"
 
     def get_absolute_url(self):
         return reverse("projectaccess_detail", kwargs={"pk": self.pk})
