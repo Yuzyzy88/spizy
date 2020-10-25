@@ -1,4 +1,3 @@
-
 from django.contrib.auth.views import LoginView, LogoutView
 from django.http import HttpRequest
 from django.shortcuts import render
@@ -8,12 +7,12 @@ from django.shortcuts import get_object_or_404
 from rest_framework.generics import (ListCreateAPIView,
                                      RetrieveUpdateDestroyAPIView)
 from rest_framework.permissions import IsAuthenticated
-from rest_framework.exceptions import PermissionDenied
+from rest_framework.exceptions import PermissionDenied, ParseError
 
 from tasks.forms import SignUpForm
 from tasks.models import Project, ProjectAccess, Task
 from tasks.serializers import ProjectSerializer, TaskSerializer
-from tasks.permissions import IsPartOfProject
+from tasks.permissions import IsUserPartOfProject, IsTaskPartOfUserProject
 
 
 def index(request: HttpRequest):
@@ -58,7 +57,7 @@ class UserLogoutView(LogoutView):
 
 class ProjectList(ListCreateAPIView):
     serializer_class = ProjectSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, IsUserPartOfProject]
 
     def get_queryset(self):
         return self.request.user.project_set.all()
@@ -70,18 +69,20 @@ class ProjectList(ListCreateAPIView):
                 project=project,
                 user=self.request.user,
                 membership_level=ProjectAccess.MembershipLevel.OWNER)
+        else:
+            return ParseError("Invalid request")
         return project
 
 
 class ProjectDetail(RetrieveUpdateDestroyAPIView):
     serializer_class = ProjectSerializer
-    permission_classes = [IsAuthenticated, IsPartOfProject]
+    permission_classes = [IsAuthenticated, IsUserPartOfProject]
 
     def get_queryset(self):
         return self.request.user.project_set.all()
 
     def get_object(self):
-        # Query the objects
+        # Query the object
         queryset = self.get_queryset()
         queryset = self.filter_queryset(queryset)
 
@@ -116,4 +117,28 @@ class TaskList(ListCreateAPIView):
                     "Could not find that project or you don't have permission")
             except ...:
                 raise PermissionDenied("Unknown error")
+        else:
+            return ParseError("Invalid request")
         return task
+
+
+class TaskDetail(RetrieveUpdateDestroyAPIView):
+    serializer_class = TaskSerializer
+    permission_classes = [IsAuthenticated, IsTaskPartOfUserProject]
+
+    def get_queryset(self):
+        return self.request.user.task_set.all()
+
+    def get_object(self):
+        # Query the object
+        queryset = self.get_queryset()
+        queryset = self.filter_queryset(queryset)
+
+        # Filter the object
+        filter = {}
+        filter[self.lookup_field] = self.kwargs[self.lookup_field]
+
+        # Check the permission before return
+        obj = get_object_or_404(queryset, **filter)
+        self.check_object_permissions(self.request, obj)
+        return obj
