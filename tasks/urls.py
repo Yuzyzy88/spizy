@@ -13,4 +13,10 @@ urlpatterns = [
     path('project/<int:pk>', views.ProjectDetail.as_view(), name="project"),
     path('tasks', views.TaskList.as_view(), name="tasks"),
     path('task/<int:pk>', views.TaskDetail.as_view(), name="task"),
+    path('project-access',
+         views.ProjectAccessList.as_view(),
+         name="projectaccesslist"),
+    path('project-access/<int:pk>',
+         views.ProjectAccessDetail.as_view(),
+         name="projectaccess"),
 ]
