@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.shortcuts import reverse
+from django.core.validators import MinValueValidator, MaxValueValidator
 
 
 class Project(models.Model):
@@ -53,6 +54,10 @@ class Task(models.Model):
     description = models.TextField()
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
     owner = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+    progress = models.IntegerField(
+        validators=[MinValueValidator(0),
+                    MaxValueValidator(100)], default=0)
+    due_date = models.DateTimeField(default='2020-10-25 00:00:00')
 
     class Meta:
         verbose_name = "task"
