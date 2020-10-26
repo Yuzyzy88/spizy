@@ -4,19 +4,16 @@ from json.decoder import JSONDecodeError
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.models import User
-from django.contrib.auth.views import LoginView, LogoutView
 from django.db.models import Q
 from django.http import HttpRequest, HttpResponseBadRequest, JsonResponse
 from django.middleware import csrf
-from django.shortcuts import get_object_or_404, render
-from django.urls import reverse_lazy
-from django.views.generic import CreateView
+from django.shortcuts import get_object_or_404
 from rest_framework import status
 from rest_framework.authentication import SessionAuthentication
 from rest_framework.decorators import (api_view, authentication_classes,
                                        permission_classes)
-from rest_framework.exceptions import (AuthenticationFailed, ParseError,
-                                       PermissionDenied, ValidationError)
+from rest_framework.exceptions import (ParseError, PermissionDenied,
+                                       ValidationError)
 from rest_framework.generics import (ListCreateAPIView,
                                      RetrieveUpdateDestroyAPIView)
 from rest_framework.parsers import JSONParser
