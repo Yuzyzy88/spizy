@@ -1,61 +1,133 @@
+import io
+from json.decoder import JSONDecodeError
+
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.models import User
 from django.contrib.auth.views import LoginView, LogoutView
-from django.http import HttpRequest
+from django.db.models import Q
+from django.http import HttpRequest, HttpResponseBadRequest, JsonResponse
+from django.middleware import csrf
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse_lazy
 from django.views.generic import CreateView
-from rest_framework.exceptions import PermissionDenied
-from django.db.models import Q
+from rest_framework import status
+from rest_framework.authentication import SessionAuthentication
+from rest_framework.decorators import (api_view, authentication_classes,
+                                       permission_classes)
+from rest_framework.exceptions import (AuthenticationFailed, ParseError,
+                                       PermissionDenied, ValidationError)
 from rest_framework.generics import (ListCreateAPIView,
                                      RetrieveUpdateDestroyAPIView)
+from rest_framework.parsers import JSONParser
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.request import Request
+from rest_framework.response import Response
 
 from tasks.forms import SignUpForm
 from tasks.models import Project, ProjectAccess, Task
 from tasks.permissions import (IsTaskPartOfUserProject, IsUserOwnerOfProject,
                                IsUserPartOfProject)
 from tasks.serializers import (ProjectAccessSerializer, ProjectSerializer,
-                               TaskSerializer)
+                               SignUpFormSerializer, TaskSerializer,
+                               UserSerializer)
 
 
-def index(request: HttpRequest):
+def csrfview(request: HttpRequest):
     """
-    Renders homepage
+    Returns a CSRF token for use
     """
-    return render(request, 'tasks/index.html')
+    return JsonResponse({'token': csrf.get_token(request)})
 
 
-def login(request: HttpRequest):
+def UserLogin(request: HttpRequest):
     """
-    Renders login page
+    Logs a user in via JSON request
     """
-    return render(request, 'tasks/login.html')
+    try:
+        # Try to parse the data as JSON
+        stream = io.BytesIO(request.body)
+        data = JSONParser().parse(stream)
+
+        # Serialize the user data
+        serializer = UserSerializer(data=data)
+
+        # Will raise exception if data is invalid
+        serializer.is_valid(raise_exception=True)
+
+        # Check if the data is valid and try logging in
+        form = AuthenticationForm(request=request,
+                                  data=serializer.validated_data)
+
+    except JSONDecodeError:
+        return HttpResponseBadRequest()
+    except BaseException:
+        return HttpResponseBadRequest()
+
+    if form.is_valid():
+        user = authenticate(request=request,
+                            username=form.cleaned_data['username'],
+                            password=form.cleaned_data['password'])
+        login(request, user)
+        return JsonResponse({'status': True})
+    else:
+        return JsonResponse(data={"detail": "Incorrect username or password"},
+                            status=status.HTTP_401_UNAUTHORIZED)
 
 
-class UserSignUpForm(CreateView):
-    form_class = SignUpForm
-    success_url = reverse_lazy('tasks:login')
-    template_name = "tasks/signup.html"
-
-    def get_form_kwargs(self, *args, **kwargs):
-        kwargs = super().get_form_kwargs(*args, **kwargs)
-
-        if self.request.method in ('POST', 'PUT'):
-            username = kwargs['data'].get('username', '')
-            kwargs['data'] = self.request.POST.copy()
-            kwargs['data'].update({'email': username})
-        return kwargs
+@api_view(['POST'])
+@authentication_classes([SessionAuthentication])
+@permission_classes([IsAuthenticated])
+def UserLogout(request: Request):
+    logout(request)
+    return JsonResponse({'status': True})
 
 
-class UserLoginView(LoginView):
-    template_name = "tasks/login.html"
-    extra_context = {'next': reverse_lazy('tasks:home')}
-    redirect_authenticated_user = True
+@api_view(['GET'])
+@authentication_classes([SessionAuthentication])
+@permission_classes([IsAuthenticated])
+def check_login(request: Request):
+    """
+    Checks if user is logged in
+    """
+    if (request.user.is_authenticated):
+        return Response({'status': True})
+    else:
+        raise PermissionDenied('Please log in')
 
 
-class UserLogoutView(LogoutView):
-    template_name = "tasks/logout.html"
-    extra_context = {'logged_out': True}
+@api_view(["POST"])
+@authentication_classes([SessionAuthentication])
+def UserSignUp(request: Request):
+    """
+    Signup User
+    """
+    try:
+        # Serialize the data
+        serializer = SignUpFormSerializer(data=request.data)
+
+        # Verify Serialized Data
+        serializer.is_valid(raise_exception=True)
+
+        # Check with the form
+        form = SignUpForm(data=serializer.validated_data)
+
+        if form.is_valid():
+            user: User = form.save(commit=True)
+            return JsonResponse(
+                data={
+                    'username': user.username,
+                    'first_name': user.first_name,
+                    'last_name': user.last_name
+                })
+        else:
+            raise ParseError(data=form.errors)
+    except ValidationError as serializer_error:
+        raise serializer_error
+    except ParseError as form_error:
+        raise form_error
+    except BaseException:
+        raise ParseError()
 
 
 class ProjectList(ListCreateAPIView):

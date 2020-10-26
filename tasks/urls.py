@@ -5,10 +5,13 @@ from tasks import views
 app_name = "tasks"
 
 urlpatterns = [
-    path('', views.index, name="home"),
-    path('signup', views.UserSignUpForm.as_view(), name="signup"),
-    path('login', views.UserLoginView.as_view(), name="login"),
-    path('logout', views.UserLogoutView.as_view(), name="logout"),
+    path('csrftoken', views.csrfview, name='csrfview'),
+    # User Views
+    path('signup', views.UserSignUp, name="signup"),
+    path('login', views.UserLogin, name="login"),
+    path('check-login', views.check_login, name="checklogin"),
+    path('logout', views.UserLogout, name="logout"),
+    # API View
     path('projects', views.ProjectList.as_view(), name="projects"),
     path('project/<int:pk>', views.ProjectDetail.as_view(), name="project"),
     path('tasks', views.TaskList.as_view(), name="tasks"),

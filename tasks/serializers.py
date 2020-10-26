@@ -1,5 +1,6 @@
-from rest_framework.serializers import (EmailField, ModelSerializer,
-                                        ReadOnlyField)
+from django.contrib.auth.models import User
+from rest_framework.serializers import (CharField, EmailField, ModelSerializer,
+                                        ReadOnlyField, Serializer)
 
 from tasks.models import Project, ProjectAccess, Task
 
@@ -34,3 +35,25 @@ class ProjectAccessSerializer(ModelSerializer):
     class Meta:
         model = ProjectAccess
         fields = ['id', 'project', 'user', 'membership_level']
+
+
+class UserSerializer(ModelSerializer):
+    """
+    Serializer for User Model
+    """
+    username = EmailField()
+
+    class Meta:
+        model = User
+        fields = ['id', 'username', 'password']
+
+
+class SignUpFormSerializer(Serializer):
+    """
+    Serializer for Sign Up Form
+    """
+    username = EmailField(max_length=128)
+    password1 = CharField(max_length=128, min_length=6, allow_blank=False)
+    password2 = CharField(max_length=128, min_length=6, allow_blank=False)
+    first_name = CharField(max_length=128, min_length=1, allow_blank=False)
+    last_name = CharField(max_length=128, min_length=1, allow_blank=False)
