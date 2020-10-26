@@ -29,9 +29,6 @@ class ProjectAccess(models.Model):
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
-    class Meta:
-        unique_together = (('project', 'user'))
-
     class MembershipLevel(models.IntegerChoices):
         OWNER = 1
         MEMBER = 2
@@ -41,6 +38,7 @@ class ProjectAccess(models.Model):
     class Meta:
         verbose_name = "projectaccess"
         verbose_name_plural = "projectaccess"
+        unique_together = (('project', 'user'))
 
     def __str__(self):
         return f"{self.project.title} - {self.user.username}"
