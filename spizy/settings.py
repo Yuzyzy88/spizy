@@ -24,7 +24,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = environ.get("SECRET_KEY", binascii.hexlify(urandom(32)).decode)
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = str(environ.get('DEBUG', 'false')).lower() == 'true'
 
 ALLOWED_HOSTS = []
 
