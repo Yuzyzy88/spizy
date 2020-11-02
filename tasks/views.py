@@ -62,11 +62,15 @@ def UserLogin(request: HttpRequest):
         return HttpResponseBadRequest()
 
     if form.is_valid():
-        user = authenticate(request=request,
-                            username=form.cleaned_data['username'],
-                            password=form.cleaned_data['password'])
+        user: User = authenticate(request=request,
+                                  username=form.cleaned_data['username'],
+                                  password=form.cleaned_data['password'])
         login(request, user)
-        return JsonResponse({'status': True})
+        return JsonResponse({
+            'status': True,
+            'first_name': user.first_name,
+            'last_name': user.last_name
+        })
     else:
         return JsonResponse(data={"detail": "Incorrect username or password"},
                             status=status.HTTP_401_UNAUTHORIZED)
@@ -88,7 +92,11 @@ def check_login(request: Request):
     Checks if user is logged in
     """
     if (request.user.is_authenticated):
-        return Response({'status': True})
+        return Response({
+            'status': True,
+            'first_name': request.user.first_name,
+            'last_name': request.user.last_name
+        })
     else:
         raise PermissionDenied('Please log in')
 
