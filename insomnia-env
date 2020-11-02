@@ -1,0 +1,282 @@
+_type: export
+__export_format: 4
+__export_date: 2020-11-01T21:39:13.679Z
+__export_source: insomnia.desktop.app:v2020.4.2
+resources:
+  - _id: req_1f220be25b7a48e98e595800b841ec9d
+    parentId: wrk_5ace104821bc4d6fbc8009e03fb06c8d
+    modified: 1603684238747
+    created: 1603674976631
+    url: "{{ endpoint }}csrftoken"
+    name: CSRF Token
+    description: ""
+    method: GET
+    body: {}
+    parameters: []
+    headers: []
+    authentication: {}
+    metaSortKey: -1603680750142
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: wrk_5ace104821bc4d6fbc8009e03fb06c8d
+    parentId: null
+    modified: 1603241957875
+    created: 1603241957875
+    name: Spizy
+    description: ""
+    scope: null
+    _type: workspace
+  - _id: req_0726e12d1d10428da0c21051e7855733
+    parentId: wrk_5ace104821bc4d6fbc8009e03fb06c8d
+    modified: 1603688981941
+    created: 1603686888009
+    url: "{{ endpoint }}signup"
+    name: Sign Up
+    description: ""
+    method: POST
+    body:
+      mimeType: application/json
+      text: |-
+        {
+        	"username": "test7@email.com",
+        	"password1": "SLKJDF@#*()",
+        	"password2": "SLKJDF@#*()",
+        	"first_name": "Test7",
+        	"last_name": "Test7"
+        }
+    parameters: []
+    headers:
+      - name: Content-Type
+        value: application/json
+        id: pair_8cd8b7a48fa14b819d230e05e0431d01
+      - name: X-CSRFToken
+        value: PxNZTd2hIieJvRq0FzwJmZWJbde2Ey70vdYZMDsbQr0vbMIG8hVHeZbXde19ohlu
+        description: ""
+        id: pair_bf3075d0c93b4eb08b55eb0a4518ea15
+        disabled: false
+    authentication: {}
+    metaSortKey: -1603680750117
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: req_a298699d29714358bd65f14b81e9db33
+    parentId: wrk_5ace104821bc4d6fbc8009e03fb06c8d
+    modified: 1603689014470
+    created: 1603676457289
+    url: "{{ endpoint }}login"
+    name: Login
+    description: ""
+    method: POST
+    body:
+      mimeType: application/json
+      text: |-
+        {
+        	"username": "test7@email.com",
+        	"password": "SLKJDF@#*()"
+        }
+    parameters: []
+    headers:
+      - name: Content-Type
+        value: application/json
+        id: pair_e2d4302a9a4a4b0983327e32d8cebf0a
+      - name: X-CSRFToken
+        value: 3HdYhZsXCjMmbe6oA3b1hXKK4J1RbzzZJnoYapSRKsy8R9o43LAZ9XZY6KOYViNt
+        description: ""
+        id: pair_c926edd01eff4f38bdc9fbe12bcfbd78
+        disabled: false
+    authentication: {}
+    metaSortKey: -1603680750092
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: req_8b040e193b294eceac7ce18bf16818e0
+    parentId: wrk_5ace104821bc4d6fbc8009e03fb06c8d
+    modified: 1603680812245
+    created: 1603680750042
+    url: "{{ endpoint }}check-login"
+    name: Check Login
+    description: ""
+    method: GET
+    body: {}
+    parameters: []
+    headers: []
+    authentication: {}
+    metaSortKey: -1603680750042
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: req_000f94c2836a48ff85a7d61df0efc7af
+    parentId: wrk_5ace104821bc4d6fbc8009e03fb06c8d
+    modified: 1603686837325
+    created: 1603684383875
+    url: "{{ endpoint }}logout"
+    name: Logout
+    description: ""
+    method: POST
+    body: {}
+    parameters: []
+    headers:
+      - name: X-CSRFToken
+        value: VvhlDrSCEG1KBSCcJwO5yrNEdPrIKtJ2Nh8wpFCP7j4Fxev9BUGku2RMqBHLx5iz
+        description: ""
+        id: pair_43f742a33bc0462ab9cddc08ebe3170e
+    authentication: {}
+    metaSortKey: -1603461847638.5
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: req_2fce1a939d354424a6a2980a50933677
+    parentId: wrk_5ace104821bc4d6fbc8009e03fb06c8d
+    modified: 1603688255475
+    created: 1603242032646
+    url: "{{ endpoint }}projects"
+    name: Projects
+    description: ""
+    method: GET
+    body: {}
+    parameters: []
+    headers:
+      - name: ""
+        value: ""
+        description: ""
+        id: pair_4c2ba2d3438c433e8dac77cca1bc3e70
+    authentication: {}
+    metaSortKey: -1603352168289.5
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: req_d30de3a4e881479e9798a13e6be5f036
+    parentId: wrk_5ace104821bc4d6fbc8009e03fb06c8d
+    modified: 1603689042390
+    created: 1603242945235
+    url: "{{ endpoint }}projects"
+    name: Project Create
+    description: ""
+    method: POST
+    body:
+      mimeType: application/json
+      text: |-
+        {
+        	"title": "Test3",
+        	"description": "Test Description"
+        }
+    parameters: []
+    headers:
+      - name: Content-Type
+        value: application/json
+        id: pair_0c5eb61a4ced4b2e99dfa39e5765339e
+      - name: X-CSRFTOKEN
+        value: k4zWo27gujpc20Bd7Q1u21G5qtaEB7C6bJ5adfr3nxNEbiigm743kgtJac0WUCFu
+        description: ""
+        id: pair_ab58306ff1164755be06ae10a7f5b0df
+        disabled: false
+      - name: ""
+        value: ""
+        description: ""
+        id: pair_2fd59dd85e6f473c97a72e2d006a3c04
+    authentication: {}
+    metaSortKey: -1603242488940.5
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: env_a3f90baaab0a0f440ed4434d43835a9413025e22
+    parentId: wrk_5ace104821bc4d6fbc8009e03fb06c8d
+    modified: 1603241957908
+    created: 1603241957908
+    name: Base Environment
+    data: {}
+    dataPropertyOrder: null
+    color: null
+    isPrivate: false
+    metaSortKey: 1603241957908
+    _type: environment
+  - _id: jar_a3f90baaab0a0f440ed4434d43835a9413025e22
+    parentId: wrk_5ace104821bc4d6fbc8009e03fb06c8d
+    modified: 1603689023033
+    created: 1603241957909
+    name: Default Jar
+    cookies:
+      - key: csrftoken
+        value: 5go4jkQcv0oOwl8Lzn4dQMLXt1A41crUWVUi8xaZoeMgFDPOOE7M81yBdKqmkHui
+        expires: 2021-10-25T05:10:23.000Z
+        maxAge: 31449600
+        domain: 127.0.0.1
+        path: /
+        extensions:
+          - SameSite=Lax
+        hostOnly: true
+        creation: 2020-10-26T05:09:24.347Z
+        lastAccessed: 2020-10-26T05:10:23.032Z
+        id: "5622826473568803"
+      - key: sessionid
+        value: 6tr3vkvwh5b4iww4ev7ak2f7wlq35nk7
+        expires: 2020-11-09T05:10:17.000Z
+        maxAge: 1209600
+        domain: 127.0.0.1
+        path: /
+        httpOnly: true
+        extensions:
+          - SameSite=Lax
+        hostOnly: true
+        creation: 2020-10-26T05:10:17.677Z
+        lastAccessed: 2020-10-26T05:10:17.677Z
+        id: "8437546657339816"
+    _type: cookie_jar
+  - _id: spc_a2919b0baf6e4a3f9cfd94a3dda1b26c
+    parentId: wrk_5ace104821bc4d6fbc8009e03fb06c8d
+    modified: 1603241957882
+    created: 1603241957882
+    fileName: Spizy
+    contents: ""
+    contentType: yaml
+    _type: api_spec
+  - _id: env_4ff9ef7475714e60829907dbe4fa9d66
+    parentId: env_a3f90baaab0a0f440ed4434d43835a9413025e22
+    modified: 1603242023739
+    created: 1603241963805
+    name: Dev
+    data:
+      endpoint: http://127.0.0.1:8000/
+    dataPropertyOrder:
+      "&":
+        - endpoint
+    color: null
+    isPrivate: false
+    metaSortKey: 1603241963805
+    _type: environment
