@@ -99,32 +99,25 @@ def UserSignUp(request: Request):
     """
     Signup User
     """
-    try:
-        # Serialize the data
-        serializer = SignUpFormSerializer(data=request.data)
+    # Serialize the data
+    serializer = SignUpFormSerializer(data=request.data)
 
-        # Verify Serialized Data
-        serializer.is_valid(raise_exception=True)
+    # Verify Serialized Data
+    serializer.is_valid(raise_exception=True)
 
-        # Check with the form
-        form = SignUpForm(data=serializer.validated_data)
+    # Check with the form
+    form = SignUpForm(data=serializer.validated_data)
 
-        if form.is_valid():
-            user: User = form.save(commit=True)
-            return JsonResponse(
-                data={
-                    'username': user.username,
-                    'first_name': user.first_name,
-                    'last_name': user.last_name
-                })
-        else:
-            raise ParseError(data=form.errors)
-    except ValidationError as serializer_error:
-        raise serializer_error
-    except ParseError as form_error:
-        raise form_error
-    except BaseException:
-        raise ParseError()
+    if form.is_valid():
+        user: User = form.save(commit=True)
+        return JsonResponse(
+            data={
+                'username': user.username,
+                'first_name': user.first_name,
+                'last_name': user.last_name
+            })
+    else:
+        raise ParseError(detail=form.errors)
 
 
 class ProjectList(ListCreateAPIView):
