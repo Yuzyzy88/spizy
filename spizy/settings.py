@@ -131,6 +131,7 @@ CSRF_COOKIE_HTTPONLY = False
 
 if DEBUG:
     CORS_ALLOWED_ORIGINS = ['http://localhost:3000']
+    CORS_ALLOW_CREDENTIALS = True
 else:
     CORS_ALLOWED_ORIGINS = ['https://spizy.yuizyy.com']
 
