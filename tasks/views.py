@@ -68,6 +68,7 @@ def UserLogin(request: HttpRequest):
         login(request, user)
         return JsonResponse({
             'status': True,
+            'username': user.username,
             'first_name': user.first_name,
             'last_name': user.last_name
         })
@@ -94,6 +95,7 @@ def check_login(request: Request):
     if (request.user.is_authenticated):
         return Response({
             'status': True,
+            'username': request.user.username,
             'first_name': request.user.first_name,
             'last_name': request.user.last_name
         })
