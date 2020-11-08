@@ -248,8 +248,12 @@ class ProjectAccessList(ListCreateAPIView):
             username=serializer.validated_data.get('user').get('username'))
         # Check if the user is the OWNER of the project;
         # Owners of the project may add access
-        user_access = queryset.filter(user=self.request.user).get(
-            project=project)
+        try:
+            user_access = queryset.filter(user=self.request.user).get(
+                project=project)
+        except ProjectAccess.DoesNotExist:
+            raise PermissionDenied(
+                "Your either don't have access or project doesn't exist")
 
         # Check if the user is the owner
         self.check_object_permissions(self.request, user_access)
