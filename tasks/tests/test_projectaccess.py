@@ -81,7 +81,8 @@ class ProjectAccessTestCase(TestCase):
                 'user': self.user_bob.username,
                 'project': project['id'],
                 'membership_level': ProjectAccess.MembershipLevel.MEMBER
-            })
+            },
+            content_type='application/json')
 
         self.assertEqual(access_response.status_code, 201)
 
@@ -111,7 +112,8 @@ class ProjectAccessTestCase(TestCase):
                 'user': self.user_steve.username,
                 'project': project['id'],
                 'membership_level': ProjectAccess.MembershipLevel.MEMBER
-            })
+            },
+            content_type='application/json')
 
         self.assertEqual(access_response.status_code, 403)
 
@@ -150,7 +152,8 @@ class ProjectAccessTestCase(TestCase):
                 'user': self.user_bob.username,
                 'project': project['id'],
                 'membership_level': ProjectAccess.MembershipLevel.MEMBER
-            })
+            },
+            content_type='application/json')
         access = json.loads(access_response.content.decode())
         # Update the access (via PUT)
         put_response = self.client.put(
@@ -185,7 +188,8 @@ class ProjectAccessTestCase(TestCase):
                 'user': self.user_bob.username,
                 'project': project['id'],
                 'membership_level': ProjectAccess.MembershipLevel.MEMBER
-            })
+            },
+            content_type='application/json')
         access = json.loads(access_response.content.decode())
 
         # Logout and login with member level permissions
@@ -198,7 +202,8 @@ class ProjectAccessTestCase(TestCase):
                 'user': self.user_bob.username,
                 'project': project['id'],
                 'membership_level': ProjectAccess.MembershipLevel.OWNER
-            })
+            },
+            content_type='application/json')
         self.assertEqual(put_response.status_code, 403)
 
         # Try to update the access (via PATCH)
@@ -206,5 +211,6 @@ class ProjectAccessTestCase(TestCase):
             reverse_lazy('tasks:projectaccess', kwargs={'pk': access['id']}), {
                 'user': self.user_bob.username,
                 'membership_level': ProjectAccess.MembershipLevel.MEMBER
-            })
+            },
+            content_type='application/json')
         self.assertEqual(patch_response.status_code, 403)
