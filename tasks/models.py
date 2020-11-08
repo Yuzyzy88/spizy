@@ -1,7 +1,9 @@
-from django.db import models
+from django.utils import timezone
+
 from django.contrib.auth.models import User
+from django.core.validators import MaxValueValidator, MinValueValidator
+from django.db import models
 from django.shortcuts import reverse
-from django.core.validators import MinValueValidator, MaxValueValidator
 
 
 class Project(models.Model):
@@ -57,7 +59,7 @@ class Task(models.Model):
     progress = models.IntegerField(
         validators=[MinValueValidator(0),
                     MaxValueValidator(100)], default=0)
-    due_date = models.DateTimeField(default='2020-10-25 00:00:00')
+    due_date = models.DateTimeField(default=timezone.now)
 
     class Meta:
         verbose_name = "task"
