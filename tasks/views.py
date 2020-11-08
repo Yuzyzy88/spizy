@@ -12,8 +12,7 @@ from rest_framework import status
 from rest_framework.authentication import SessionAuthentication
 from rest_framework.decorators import (api_view, authentication_classes,
                                        permission_classes)
-from rest_framework.exceptions import (ParseError, PermissionDenied,
-                                       ValidationError)
+from rest_framework.exceptions import (ParseError, PermissionDenied)
 from rest_framework.generics import (ListCreateAPIView,
                                      RetrieveUpdateDestroyAPIView)
 from rest_framework.parsers import JSONParser
