@@ -26,7 +26,7 @@ SECRET_KEY = environ.get("SECRET_KEY", binascii.hexlify(urandom(32)).decode)
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = str(environ.get('DEBUG', 'false')).lower() == 'true'
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['.yuizyy.com', 'localhost', '127.0.0.1']
 
 # Application definition
 
