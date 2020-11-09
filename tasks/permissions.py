@@ -1,8 +1,9 @@
+from django.db.models import Q
 from django.http.request import HttpRequest
 from rest_framework.exceptions import NotAuthenticated, PermissionDenied
-from rest_framework.permissions import BasePermission, SAFE_METHODS
+from rest_framework.permissions import SAFE_METHODS, BasePermission
 
-from tasks.models import Project, Task, ProjectAccess
+from tasks.models import Project, ProjectAccess, Task
 
 
 class IsUserPartOfProject(BasePermission):
@@ -35,8 +36,21 @@ class IsTaskPartOfUserProject(BasePermission):
             if request.user.is_anonymous:
                 raise NotAuthenticated('You need to login first')
             else:
-                request.user.task_set.get(pk=obj.pk)
+                # Get All User Projects
+                user_projects = request.user.project_set.all()
+
+                # For every project the user is part of,
+                # get all the project members and their access level
+                filters = Q()
+                for project in user_projects:
+                    filters |= Q(project=project)
+
+                # Try to get the task
+                Task.objects.filter(filters).get(pk=obj.pk)
+
+                # If got task means, user is part of it
                 return True
+
         except Task.DoesNotExist:
             raise PermissionDenied("You don't have permission to do that")
         except Exception:

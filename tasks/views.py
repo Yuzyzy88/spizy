@@ -176,7 +176,16 @@ class TaskList(ListCreateAPIView):
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
-        return self.request.user.task_set.all()
+        # Get All User Projects
+        user_projects = self.request.user.project_set.all()
+
+        # For every project the user is part of,
+        # get all the project members and their access level
+        filters = Q()
+        for project in user_projects:
+            filters |= Q(project=project)
+
+        return Task.objects.filter(filters)
 
     def perform_create(self, serializer: TaskSerializer):
         # Get the project
@@ -200,7 +209,16 @@ class TaskDetail(RetrieveUpdateDestroyAPIView):
     permission_classes = [IsAuthenticated, IsTaskPartOfUserProject]
 
     def get_queryset(self):
-        return self.request.user.task_set.all()
+        # Get All User Projects
+        user_projects = self.request.user.project_set.all()
+
+        # For every project the user is part of,
+        # get all the project members and their access level
+        filters = Q()
+        for project in user_projects:
+            filters |= Q(project=project)
+
+        return Task.objects.filter(filters)
 
     def get_object(self):
         # Query the object
